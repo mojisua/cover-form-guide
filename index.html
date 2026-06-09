@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>COVER Page Form Guide</title>
+  <title>COVER & PROJECT SUMMARY Form Guide</title>
   <style>
     * {
       margin: 0;
@@ -18,13 +18,56 @@
       line-height: 1.6;
     }
 
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #e0e0e0;
+      background: white;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      padding: 12px 16px;
+      border: none;
+      background: white;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .tab-btn:hover {
+      color: #0066cc;
+    }
+
+    .tab-btn.active {
+      color: white;
+      background: #0066cc;
+      border-bottom-color: #0066cc;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: flex;
+    }
+
     .container {
       display: flex;
-      height: 100vh;
+      min-height: calc(100vh - 50px);
     }
 
     .left-panel {
-      flex: 1.5;
+      flex: 2;
       background: white;
       overflow-y: auto;
       padding: 24px;
@@ -75,6 +118,55 @@
       border-color: #0066cc;
     }
 
+    .collapsible-section {
+      margin-bottom: 24px;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .collapsible-header {
+      background: #f5f5f5;
+      padding: 12px 16px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 14px;
+      user-select: none;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .collapsible-header:hover {
+      background: #f0f0f0;
+    }
+
+    .collapsible-toggle {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+
+    .collapsible-section.collapsed .collapsible-toggle {
+      transform: rotate(-90deg);
+    }
+
+    .collapsible-content {
+      padding: 16px;
+      max-height: 2000px;
+      transition: max-height 0.3s, padding 0.3s;
+      overflow: hidden;
+    }
+
+    .collapsible-section.collapsed .collapsible-content {
+      max-height: 0;
+      padding: 0 16px;
+    }
+
     .form-group {
       margin-bottom: 20px;
       position: relative;
@@ -93,8 +185,10 @@
     }
 
     .form-group input[type="text"],
+    .form-group input[type="email"],
     .form-group input[type="date"],
-    .form-group select {
+    .form-group select,
+    .form-group textarea {
       width: 100%;
       padding: 8px 12px;
       border: 1px solid #d0d0d0;
@@ -105,8 +199,10 @@
     }
 
     .form-group input[type="text"]:focus,
+    .form-group input[type="email"]:focus,
     .form-group input[type="date"]:focus,
-    .form-group select:focus {
+    .form-group select:focus,
+    .form-group textarea:focus {
       outline: none;
       border-color: #0066cc;
       background: #f0f7ff;
@@ -126,6 +222,12 @@
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 16px;
     }
 
@@ -192,6 +294,13 @@
       color: #333;
     }
 
+    .field-info h3 {
+      font-size: 14px;
+      margin-top: 12px;
+      margin-bottom: 8px;
+      color: #555;
+    }
+
     .field-info p {
       font-size: 13px;
       margin-bottom: 12px;
@@ -247,8 +356,56 @@
       font-style: italic;
     }
 
+    .entity-row {
+      background: #f9f9f9;
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .entity-controls {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      background: #0066cc;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: #0052a3;
+    }
+
+    .btn-danger {
+      background: #d32f2f;
+    }
+
+    .btn-danger:hover {
+      background: #b71c1c;
+    }
+
+    .conditional-section {
+      background: #f9f9f9;
+      padding: 12px;
+      border-radius: 4px;
+      margin-top: 8px;
+      border: 1px solid #e0e0e0;
+    }
+
     @media (max-width: 1024px) {
-      .form-row {
+      .form-row,
+      .form-row-3 {
         grid-template-columns: 1fr;
       }
       
@@ -262,307 +419,578 @@
         border-right: none;
         border-bottom: 1px solid #e0e0e0;
       }
+
+      .tabs {
+        border-bottom: 1px solid #e0e0e0;
+      }
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <!-- LEFT PANEL: FORM -->
-  <div class="left-panel">
-    <div class="header">
-      <h1>COVER</h1>
-      <button class="show-comments-btn" id="commentsBtn">💬 Show comments</button>
+<!-- Tab Navigation -->
+<div class="tabs">
+  <button class="tab-btn active" data-tab="cover">COVER</button>
+  <button class="tab-btn" data-tab="project-summary">PROJECT SUMMARY</button>
+  <button class="tab-btn" data-tab="project-details">PROJECT DETAILS</button>
+  <button class="tab-btn" data-tab="instance-info">INSTANCE SPECIFIC INFORMATION</button>
+  <button class="tab-btn" data-tab="stakeholder">SAFEGUARDS AND STAKEHOLDER ENGAGEMENT</button>
+  <button class="tab-btn" data-tab="methodology">APPLICATION OF METHODOLOGY</button>
+  <button class="tab-btn" data-tab="quantification">QUANTIFICATION</button>
+  <button class="tab-btn" data-tab="reporting">REPORTING</button>
+  <button class="tab-btn" data-tab="monitoring">MONITORING</button>
+  <button class="tab-btn" data-tab="appendix">APPENDIX</button>
+  <button class="tab-btn" data-tab="registry">REGISTRY</button>
+  <button class="tab-btn" data-tab="activity">ACTIVITY LOG</button>
+</div>
+
+<!-- COVER TAB -->
+<div class="tab-content active" data-tab-content="cover">
+  <div class="container">
+    <div class="left-panel">
+      <div class="header">
+        <h1>COVER</h1>
+        <button class="show-comments-btn" id="commentsBtn-cover">💬 Show comments</button>
+      </div>
+
+      <form id="coverForm">
+        <div class="form-group">
+          <label>Project Name <span class="required">*</span></label>
+          <input type="text" id="projectName" placeholder="Enter project name" data-field="project-name" />
+        </div>
+
+        <div class="form-group">
+          <label>Text_Matrix</label>
+          <input type="text" id="textMatrix" placeholder="Enter value" data-field="text-matrix" />
+        </div>
+
+        <div class="form-group readonly">
+          <label>Registry ID</label>
+          <input type="text" id="registryId" value="Auto-assigned ID" disabled />
+        </div>
+
+        <div class="form-group">
+          <label>Project Start Date</label>
+          <input type="date" id="projectStartDate" data-field="project-start-date" />
+        </div>
+
+        <div class="form-group">
+          <label>Issuing Period Start & End Date</label>
+          <div class="form-row">
+            <div>
+              <label style="font-size: 12px; font-weight: normal;">Start Date <span class="required">*</span></label>
+              <input type="date" id="issuingStartDate" data-field="issuing-period-start" />
+            </div>
+            <div>
+              <label style="font-size: 12px; font-weight: normal;">End Date</label>
+              <input type="date" id="issuingEndDate" data-field="issuing-period-end" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Submission Purpose <span class="required">*</span></label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" id="purpose-listing" name="submissionPurpose" value="listing" data-field="submission-purpose" />
+              <label for="purpose-listing">Listing</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="purpose-validation" name="submissionPurpose" value="validation" data-field="submission-purpose" />
+              <label for="purpose-validation">Validation Approval</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="purpose-deviation" name="submissionPurpose" value="deviation" data-field="submission-purpose" />
+              <label for="purpose-deviation">Updated Project Description Following IP Deviation</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="purpose-resubmission" name="submissionPurpose" value="resubmission" data-field="submission-purpose" />
+              <label for="purpose-resubmission">Resubmission/Update</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Document Version</label>
+          <input type="text" id="documentVersion" placeholder="e.g., v1, v2, v3" data-field="document-version" />
+        </div>
+
+        <div class="form-group">
+          <label>First Issue Date</label>
+          <input type="date" id="firstIssueDate" data-field="first-issue-date" />
+        </div>
+
+        <div class="form-group">
+          <label>Last Issue Date</label>
+          <input type="date" id="lastIssueDate" data-field="last-issue-date" />
+        </div>
+
+        <div class="form-group">
+          <label>SBS Standard Version</label>
+          <select id="standardVersion" data-field="standard-version">
+            <option value="">Select a version</option>
+            <option value="v9.5">SBS Standard V9.5</option>
+            <option value="v9.0">SBS Standard V9.0</option>
+            <option value="v8.5">SBS Standard V8.5</option>
+            <option value="v1.9">SCS Standard V1.9</option>
+          </select>
+        </div>
+      </form>
     </div>
 
-    <form id="coverForm">
-      <!-- Project Name -->
-      <div class="form-group">
-        <label>Project Name <span class="required">*</span></label>
-        <span class="field-tag">Editable</span>
-        <input type="text" id="projectName" placeholder="Enter project name" data-field="project-name" />
-        <div class="hint-text">Enter the full project title as it should appear in the registry</div>
-      </div>
-
-      <!-- Text_Matrix (appears to be a specific field) -->
-      <div class="form-group">
-        <label>Text_Matrix</label>
-        <span class="field-tag">Editable</span>
-        <input type="text" id="textMatrix" placeholder="Enter value" data-field="text-matrix" />
-      </div>
-
-      <!-- Registry ID (Read-only) -->
-      <div class="form-group readonly">
-        <label>Registry ID</label>
-        <span class="field-tag">Read-only</span>
-        <input type="text" id="registryId" value="Auto-assigned ID" disabled />
-        <div class="hint-text">This is the registry-assigned project identifier (read-only)</div>
-      </div>
-
-      <!-- Project Start Date -->
-      <div class="form-group">
-        <label>Project Start Date</label>
-        <span class="field-tag">Editable</span>
-        <input type="date" id="projectStartDate" data-field="project-start-date" />
-        <div class="hint-text">Format: DD-MMM-YYYY (e.g., 01-Jan-2022)</div>
-      </div>
-
-      <!-- Issuing Period Start & End Date -->
-      <div class="form-group">
-        <label>Issuing Period Start & End Date</label>
-        <span class="field-tag">Editable</span>
-        <div class="form-row">
-          <div>
-            <label style="font-size: 12px; font-weight: normal;">Start Date <span class="required">*</span></label>
-            <input type="date" id="issuingStartDate" data-field="issuing-period-start" />
-          </div>
-          <div>
-            <label style="font-size: 12px; font-weight: normal;">End Date</label>
-            <input type="date" id="issuingEndDate" data-field="issuing-period-end" />
-          </div>
+    <div class="right-panel">
+      <h2>Field Guide</h2>
+      <div id="fieldInfoContainer-cover">
+        <div class="placeholder-info">
+          <p>Click on any field on the left to view detailed guidance.</p>
         </div>
-        <div class="hint-text">Define the crediting period for this issuance</div>
-      </div>
-
-      <!-- Submission Purpose -->
-      <div class="form-group">
-        <label>Submission Purpose <span class="required">*</span></label>
-        <span class="field-tag">Editable</span>
-        <div class="radio-group">
-          <div class="radio-option">
-            <input type="radio" id="purpose-listing" name="submissionPurpose" value="listing" data-field="submission-purpose" />
-            <label for="purpose-listing">Listing</label>
-          </div>
-          <div class="radio-option">
-            <input type="radio" id="purpose-validation" name="submissionPurpose" value="validation" data-field="submission-purpose" />
-            <label for="purpose-validation">Validation Approval</label>
-          </div>
-          <div class="radio-option">
-            <input type="radio" id="purpose-deviation" name="submissionPurpose" value="deviation" data-field="submission-purpose" />
-            <label for="purpose-deviation">Updated Project Description Following IP Deviation</label>
-          </div>
-          <div class="radio-option">
-            <input type="radio" id="purpose-resubmission" name="submissionPurpose" value="resubmission" data-field="submission-purpose" />
-            <label for="purpose-resubmission">Resubmission/Update</label>
-          </div>
-        </div>
-        <div class="hint-text">Select the reason for this submission</div>
-      </div>
-
-      <!-- Document Version -->
-      <div class="form-group">
-        <label>Document Version</label>
-        <span class="field-tag">Editable</span>
-        <input type="text" id="documentVersion" placeholder="e.g., v1, v2, v3" data-field="document-version" />
-        <div class="hint-text">Internal version number of this document</div>
-      </div>
-
-      <!-- First Issue Date -->
-      <div class="form-group">
-        <label>First Issue Date</label>
-        <span class="field-tag">Editable</span>
-        <input type="date" id="firstIssueDate" data-field="first-issue-date" />
-        <div class="hint-text">Date on which this version was submitted (Format: DD-Month-YYYY)</div>
-      </div>
-
-      <!-- Last Issue Date -->
-      <div class="form-group">
-        <label>Last Issue Date</label>
-        <span class="field-tag">Editable</span>
-        <input type="date" id="lastIssueDate" data-field="last-issue-date" />
-        <div class="hint-text">Format: DD-Month-YYYY</div>
-      </div>
-
-      <!-- SBS Standard Version -->
-      <div class="form-group">
-        <label>SBS Standard Version</label>
-        <span class="field-tag">Editable</span>
-        <select id="standardVersion" data-field="standard-version">
-          <option value="">Select a version</option>
-          <option value="v9.5">SBS Standard V9.5</option>
-          <option value="v9.0">SBS Standard V9.0</option>
-          <option value="v8.5">SBS Standard V8.5</option>
-          <option value="v1.9">SCS Standard V1.9</option>
-        </select>
-        <div class="hint-text">Select the applicable version of the carbon standard</div>
-      </div>
-    </form>
-  </div>
-
-  <!-- RIGHT PANEL: FIELD GUIDE -->
-  <div class="right-panel">
-    <h2>Field Guide</h2>
-    <div id="fieldInfoContainer">
-      <div class="placeholder-info">
-        <p>Click on any field on the left to view detailed guidance.</p>
       </div>
     </div>
   </div>
 </div>
 
+<!-- PROJECT SUMMARY TAB -->
+<div class="tab-content" data-tab-content="project-summary">
+  <div class="container">
+    <div class="left-panel">
+      <div class="header">
+        <h1>PROJECT SUMMARY</h1>
+        <button class="show-comments-btn" id="commentsBtn-summary">💬 Show comments</button>
+      </div>
+
+      <form id="summaryForm">
+        <!-- SECTION 1.1: The Project at a Glance (Collapsible) -->
+        <div class="collapsible-section">
+          <div class="collapsible-header">
+            <span>1.1 The Project at a Glance</span>
+            <div class="collapsible-toggle">▼</div>
+          </div>
+          <div class="collapsible-content">
+            <div class="form-group">
+              <label>Instance Design</label>
+              <div class="radio-group">
+                <div class="radio-option">
+                  <input type="radio" id="instance-single" name="instanceDesign" value="single" data-field="instance-design" />
+                  <label for="instance-single">Single Instance</label>
+                </div>
+                <div class="radio-option">
+                  <input type="radio" id="instance-multiple" name="instanceDesign" value="multiple" data-field="instance-design" />
+                  <label for="instance-multiple">Multiple Instances</label>
+                </div>
+              </div>
+              <div class="hint-text">Indicate if the project is designed with a single instance or multiple instances.</div>
+            </div>
+
+            <div class="form-group">
+              <label>Country Location</label>
+              <select id="countryLocation" data-field="country-location">
+                <option value="">Select an Option</option>
+                <option value="usa">United States</option>
+                <option value="india">India</option>
+                <option value="china">China</option>
+                <option value="brazil">Brazil</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Grouped Project</label>
+              <div class="radio-group">
+                <div class="radio-option">
+                  <input type="radio" id="grouped-yes" name="groupedProject" value="yes" data-field="grouped-project" />
+                  <label for="grouped-yes">Grouped project</label>
+                </div>
+                <div class="radio-option">
+                  <input type="radio" id="grouped-no" name="groupedProject" value="no" data-field="grouped-project" />
+                  <label for="grouped-no">Non-grouped project</label>
+                </div>
+              </div>
+              <div class="hint-text">Indicate if the project is designed as a grouped or non-grouped project.</div>
+            </div>
+
+            <div class="form-group">
+              <label>Methodology</label>
+              <input type="text" id="methodology" value="SCS Baseline Methodology for CO2 Utilization in Concrete Production Version 1.0" data-field="methodology" />
+            </div>
+
+            <div class="form-group">
+              <label>Sectoral Scope</label>
+              <div class="form-row">
+                <select id="sectoralScope" data-field="sectoral-scope">
+                  <option value="">Sectoral Scope</option>
+                  <option value="manufacturing">Manufacturing Industries</option>
+                  <option value="energy">Energy Industries</option>
+                  <option value="agriculture">Agriculture</option>
+                </select>
+                <select id="sectoralScope2">
+                  <option value="">+ Manufacturing Industries</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Project Activity</label>
+              <input type="text" id="projectActivity" value="Utilization of waste CO2 as a feedstock in concrete production" data-field="project-activity" />
+            </div>
+
+            <div class="form-group">
+              <label>Impacted Product Type(s)</label>
+              <textarea id="impactedProducts" placeholder="Provide a bullet-pointed list of the central Product Classification (CPC) designation for all impacted product types." data-field="impacted-product-types" style="height: 80px;"></textarea>
+              <div class="hint-text">Example: Cement, other</div>
+            </div>
+
+            <div class="form-group">
+              <label>Non-Permanence Risk Rating</label>
+              <textarea id="nonPermanenceRisk" placeholder="If applicable, report the project's non-permanence risk rating as a percentage, otherwise write 'N/A'" data-field="non-permanence-risk" style="height: 60px;"></textarea>
+              <div class="conditional-section">
+                <label>If applicable, has the non-permanence risk report been attached as either an appendix or a separate document?</label>
+                <div class="radio-group" style="margin-top: 8px;">
+                  <div class="radio-option">
+                    <input type="radio" id="risk-yes" name="riskReport" value="yes" />
+                    <label for="risk-yes">Yes</label>
+                  </div>
+                  <div class="radio-option">
+                    <input type="radio" id="risk-no" name="riskReport" value="no" />
+                    <label for="risk-no">No</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Project Proponent</label>
+              <select id="projectProponent" data-field="project-proponent" multiple>
+                <option value="">Select all applicable Project Proponents from options</option>
+                <option value="org1">Organization 1</option>
+                <option value="org2">Organization 2</option>
+              </select>
+              <div class="hint-text">Hold Ctrl/Cmd to select multiple</div>
+            </div>
+
+            <div class="form-group">
+              <label>Other Entity</label>
+              <div id="entityContainer">
+                <div class="entity-row" id="entity-0">
+                  <div class="form-row-3">
+                    <div>
+                      <label style="font-size: 12px;">Organization Name</label>
+                      <input type="text" class="entity-name" placeholder="Enter Organization Name" />
+                    </div>
+                    <div>
+                      <label style="font-size: 12px;">Email</label>
+                      <input type="email" class="entity-email" placeholder="Enter Email" />
+                    </div>
+                    <div>
+                      <label style="font-size: 12px;">Role in the Project</label>
+                      <input type="text" class="entity-role" placeholder="Enter Role in the Project" />
+                    </div>
+                  </div>
+                  <div class="entity-controls">
+                    <button type="button" class="btn btn-danger remove-entity">Remove</button>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn" id="addEntity" style="margin-top: 12px;">+ Add Entity</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 1.2: Overview of the Project (Collapsible) -->
+        <div class="collapsible-section">
+          <div class="collapsible-header">
+            <span>1.2 Overview of the Project</span>
+            <div class="collapsible-toggle">▼</div>
+          </div>
+          <div class="collapsible-content">
+            <div class="form-group">
+              <label>Summary</label>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 12px; color: #999;">Describe the project participated in one to three paragraphs</span>
+                <button type="button" class="show-comments-btn">💬 Show comments</button>
+              </div>
+              <textarea id="summary" placeholder="Describe the project and the technology to the general audience and describe the expected outcome..." data-field="overview-summary" style="height: 120px;"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Explanation of Impact</label>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 12px; color: #999;">Explain how the Project is expected to generate GHG activities</span>
+                <button type="button" class="show-comments-btn">💬 Show comments</button>
+              </div>
+              <textarea id="explanationImpact" placeholder="" data-field="overview-impact" style="height: 100px;"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Value Chain Description</label>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 12px; color: #999;">Describe the type of value chain in which the project acts as a part of</span>
+                <button type="button" class="show-comments-btn">💬 Show comments</button>
+              </div>
+              <textarea id="valueChain" placeholder="" data-field="overview-value-chain" style="height: 100px;"></textarea>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="right-panel">
+      <h2>Field Guide</h2>
+      <div id="fieldInfoContainer-summary">
+        <div class="placeholder-info">
+          <p>Click on any field on the left to view detailed guidance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLACEHOLDER TABS -->
+<div class="tab-content" data-tab-content="project-details">
+  <div class="container">
+    <div class="left-panel">
+      <div class="header"><h1>PROJECT DETAILS</h1></div>
+      <p style="color: #999;">This section is coming soon...</p>
+    </div>
+    <div class="right-panel">
+      <h2>Field Guide</h2>
+      <div class="placeholder-info"><p>Select a field to view guidance.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content" data-tab-content="instance-info">
+  <div class="container">
+    <div class="left-panel">
+      <div class="header"><h1>INSTANCE SPECIFIC INFORMATION</h1></div>
+      <p style="color: #999;">This section is coming soon...</p>
+    </div>
+    <div class="right-panel">
+      <h2>Field Guide</h2>
+      <div class="placeholder-info"><p>Select a field to view guidance.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content" data-tab-content="stakeholder">
+  <div class="container">
+    <div class="left-panel">
+      <div class="header"><h1>SAFEGUARDS AND STAKEHOLDER ENGAGEMENT</h1></div>
+      <p style="color: #999;">This section is coming soon...</p>
+    </div>
+    <div class="right-panel">
+      <h2>Field Guide</h2>
+      <div class="placeholder-info"><p>Select a field to view guidance.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content" data-tab-content="methodology">
+  <div class="container">
+    <div class="left-panel">
+      <div class="header"><h1>APPLICATION OF METHODOLOGY</h1></div>
+      <p style="color: #999;">This section is coming soon...</p>
+    </div>
+    <div class="right-panel">
+      <h2>Field Guide</h2>
+      <div class="placeholder-info"><p>Select a field to view guidance.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content" data-tab-content="quantification">
+  <div class="container">
+    <div class="left-panel">
+      <div class="header"><h1>QUANTIFICATION</h1></div>
+      <p style="color: #999;">This section is coming soon...</p>
+    </div>
+    <div class="right-panel">
+      <h2>Field Guide</h2>
+      <div class="placeholder-info"><p>Select a field to view guidance.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content" data-tab-content="reporting">
+  <div class="container">
+    <div class="left-panel">
+      <div class="header"><h1>REPORTING</h1></div>
+      <p style="color: #999;">This section is coming soon...</p>
+    </div>
+    <div class="right-panel">
+      <h2>Field Guide</h2>
+      <div class="placeholder-info"><p>Select a field to view guidance.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content" data-tab-content="monitoring">
+  <div class="container">
+    <div class="left-panel">
+      <div class="header"><h1>MONITORING</h1></div>
+      <p style="color: #999;">This section is coming soon...</p>
+    </div>
+    <div class="right-panel">
+      <h2>Field Guide</h2>
+      <div class="placeholder-info"><p>Select a field to view guidance.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content" data-tab-content="appendix">
+  <div class="container">
+    <div class="left-panel">
+      <div class="header"><h1>APPENDIX</h1></div>
+      <p style="color: #999;">This section is coming soon...</p>
+    </div>
+    <div class="right-panel">
+      <h2>Field Guide</h2>
+      <div class="placeholder-info"><p>Select a field to view guidance.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content" data-tab-content="registry">
+  <div class="container">
+    <div class="left-panel">
+      <div class="header"><h1>REGISTRY</h1></div>
+      <p style="color: #999;">This section is coming soon...</p>
+    </div>
+    <div class="right-panel">
+      <h2>Field Guide</h2>
+      <div class="placeholder-info"><p>Select a field to view guidance.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content" data-tab-content="activity">
+  <div class="container">
+    <div class="left-panel">
+      <div class="header"><h1>ACTIVITY LOG</h1></div>
+      <p style="color: #999;">This section is coming soon...</p>
+    </div>
+    <div class="right-panel">
+      <h2>Field Guide</h2>
+      <div class="placeholder-info"><p>Select a field to view guidance.</p></div>
+    </div>
+  </div>
+</div>
+
 <script>
-  const fieldDefinitions = {
-    "project-name": {
-      label: "Project Name",
-      editable: true,
-      description: "Enter the full project title as it should appear in the registry. Avoid internal abbreviations or codes that external stakeholders may not understand.",
-      tips: [
-        "Use official project naming conventions from your organization.",
-        "Include geographic qualifier if there are multiple similar projects.",
-        "Ensure consistency with supporting documentation."
-      ]
-    },
-    "text-matrix": {
-      label: "Text_Matrix",
-      editable: true,
-      description: "This field captures specific matrix information related to the project.",
-      tips: [
-        "Fill in according to your organization's guidelines.",
-        "Keep entries consistent across all submissions."
-      ]
-    },
-    "registry-id": {
-      label: "Registry ID",
-      editable: false,
-      description: "This is the registry-assigned project identifier. It is read-only in this form. Use it when referencing the project in correspondence or other systems.",
-      tips: [
-        "Do not attempt to change this ID; edits must be requested through registry support.",
-        "Use this ID in filenames and internal trackers for easy cross-referencing."
-      ]
-    },
-    "project-start-date": {
-      label: "Project Start Date",
-      editable: true,
-      description: "Specify the date when project activities officially began according to the methodology definition.",
-      tips: [
-        "Use the DD-MMM-YYYY format (e.g., 01-Jan-2022).",
-        "Ensure consistency with supporting documentation and contracts.",
-        "This date should align with your project monitoring plan."
-      ]
-    },
-    "issuing-period-start": {
-      label: "Issuing Period – Start Date",
-      editable: true,
-      description: "Define the first day of the crediting period for this issuance (the first day for which emission reductions or removals are claimed).",
-      tips: [
-        "Check that the period does not overlap with any previous issuance.",
-        "Align with monitoring and verification reports for this period.",
-        "Must be after the project start date."
-      ]
-    },
-    "issuing-period-end": {
-      label: "Issuing Period – End Date",
-      editable: true,
-      description: "Define the last day of the crediting period for this issuance (the last day for which emission reductions or removals are claimed).",
-      tips: [
-        "Should not overlap with subsequent issuances.",
-        "Must be after the start date.",
-        "Align with your monitoring and verification completion date."
-      ]
-    },
-    "submission-purpose": {
-      label: "Submission Purpose",
-      editable: true,
-      description: "Select the reason for this submission. This controls how the registry processes and reviews the document.",
-      tips: [
-        "Choose 'Validation Approval' for first-time validation and crediting.",
-        "Use 'Resubmission/Update' when responding to corrective action requests.",
-        "Select 'Listing' for initial project registration.",
-        "'Updated Project Description' is used when there are deviations from original plans."
-      ]
-    },
-    "document-version": {
-      label: "Document Version",
-      editable: true,
-      description: "Internal version number of this document (e.g., v1, v2, v3). Helps track changes between submissions.",
-      tips: [
-        "Increment the version each time you resubmit to the registry.",
-        "Keep a matching version number in your local filename.",
-        "Use consistent versioning format across all submissions."
-      ]
-    },
-    "first-issue-date": {
-      label: "First Issue Date",
-      editable: true,
-      description: "Date on which this version was first submitted to the registry for this issuance cycle.",
-      tips: [
-        "Use the date of initial upload or formal submission, not the draft creation date.",
-        "Keep this aligned with your internal records of submission.",
-        "Important for audit trail and compliance tracking."
-      ]
-    },
-    "last-issue-date": {
-      label: "Last Issue Date",
-      editable: true,
-      description: "Date associated with the final issuance for this crediting period (if applicable).",
-      tips: [
-        "May match or follow the approval date from the registry.",
-        "Leave blank if this is the first and only issuance so far.",
-        "Update this field when receiving final approval from the registry."
-      ]
-    },
-    "standard-version": {
-      label: "Standard Version",
-      editable: true,
-      description: "Select the applicable version of the carbon standard. This defines which rules and requirements apply to your project.",
-      tips: [
-        "Confirm the correct version with your validation/verification body (VVB).",
-        "Ensure your monitoring plan and calculations reference the same standard version.",
-        "Different versions may have different requirements and methodologies.",
-        "Cannot be changed after initial submission for a given crediting period."
-      ]
-    }
+  // Field definitions
+  const coverFields = {
+    "project-name": { label: "Project Name", editable: true, description: "Enter the full project title as it should appear in the registry. Avoid internal abbreviations or codes that external stakeholders may not understand.", tips: ["Use official project naming conventions from your organization.", "Include geographic qualifier if there are multiple similar projects.", "Ensure consistency with supporting documentation."] },
+    "text-matrix": { label: "Text_Matrix", editable: true, description: "This field captures specific matrix information related to the project.", tips: ["Fill in according to your organization's guidelines.", "Keep entries consistent across all submissions."] },
+    "project-start-date": { label: "Project Start Date", editable: true, description: "Specify the date when project activities officially began according to the methodology definition.", tips: ["Use the DD-MMM-YYYY format (e.g., 01-Jan-2022).", "Ensure consistency with supporting documentation and contracts.", "This date should align with your project monitoring plan."] },
+    "issuing-period-start": { label: "Issuing Period – Start Date", editable: true, description: "Define the first day of the crediting period for this issuance (the first day for which emission reductions or removals are claimed).", tips: ["Check that the period does not overlap with any previous issuance.", "Align with monitoring and verification reports for this period.", "Must be after the project start date."] },
+    "submission-purpose": { label: "Submission Purpose", editable: true, description: "Select the reason for this submission. This controls how the registry processes and reviews the document.", tips: ["Choose 'Validation Approval' for first-time validation and crediting.", "Use 'Resubmission/Update' when responding to corrective action requests."] },
+    "standard-version": { label: "Standard Version", editable: true, description: "Select the applicable version of the carbon standard. This defines which rules and requirements apply to your project.", tips: ["Confirm the correct version with your validation/verification body (VVB).", "Ensure your monitoring plan and calculations reference the same standard version."] }
   };
 
-  const formInputs = document.querySelectorAll('input[data-field], select[data-field]');
-  const fieldInfoContainer = document.getElementById('fieldInfoContainer');
-  const commentsBtn = document.getElementById('commentsBtn');
+  const summaryFields = {
+    "instance-design": { label: "Instance Design", description: "Choose whether the project is a single instance or composed of multiple instances. This affects how monitoring data and boundaries are defined.", tips: ["Select 'Single instance' if all activities occur at one facility or site.", "Select 'Multiple instance' when the project aggregates several similar sites or units under one project."] },
+    "country-location": { label: "Country Location", description: "Select the country in which the project is physically implemented. This drives applicable regulatory and jurisdictional context.", tips: ["Use the primary host country listed in project documentation.", "If the project spans multiple countries, follow the program's rules for primary country selection."] },
+    "grouped-project": { label: "Grouped Project", description: "Indicate whether this is a grouped project (umbrella for multiple similar activities added over time) or a stand‑alone, non‑grouped project.", tips: ["Select 'Grouped project' if new instances may be added during the crediting period under common eligibility criteria.", "Select 'Non‑grouped project' for a fixed set of sites or units."] },
+    "methodology": { label: "Methodology", description: "Confirm the approved GHG methodology applied to this project. While often fixed once selected, treat this field as editable in the guide so users understand its purpose.", tips: ["Ensure the methodology name and version exactly match your validation documentation.", "Changing methodologies mid‑project usually requires approval; coordinate with the program before editing."] },
+    "sectoral-scope": { label: "Sectoral Scope", description: "Choose the sectoral scope that best corresponds to the project activities (e.g., manufacturing industries).", tips: ["Match the sectoral scope used during project registration and validation.", "If multiple scopes seem relevant, use the one specified in the methodology or seek registry guidance."] },
+    "project-activity": { label: "Project Activity", description: "Provide a concise description of the project activity (e.g., utilization of waste CO₂ as a feedstock in concrete production).", tips: ["Keep the description short but specific enough that stakeholders can quickly understand what is being done.", "Avoid internal jargon; use terminology consistent with the methodology."] },
+    "impacted-product-types": { label: "Impacted Product Type(s)", description: "List the product types (using CPC or equivalent classification) that are affected by the project during the issuing period.", tips: ["Use bullet points to list each product type and its code, where applicable.", "Ensure the listed products match those used in your baseline and project emission calculations."] },
+    "non-permanence-risk": { label: "Non‑Permanence Risk Rating", description: "If relevant to the project category, report the non‑permanence risk rating as a percentage, or enter 'N/A' where the concept does not apply.", tips: ["Follow the program's prescribed risk assessment tool or template.", "Indicate clearly whether the detailed risk report is attached as an appendix or separate document."] },
+    "project-proponent": { label: "Project Proponent", description: "Select one or more organizations that are recognized as formal project proponents in the registry.", tips: ["Ensure that organization names match those in legal agreements and supporting documents.", "If there are multiple proponents, verify that roles and responsibilities are clearly defined in the project design document."] },
+    "other-entity": { label: "Other Entity", description: "Capture additional organizations involved in the project (e.g., technology providers, aggregators, consultants) and specify their role and contact email.", tips: ["Use one row per organization to avoid confusion.", "Describe roles succinctly (e.g., 'Technology provider', 'Monitoring partner')."] },
+    "overview-summary": { label: "Overview – Summary", description: "Provide a 1–3 paragraph summary of the project, including key technologies, activities, and objectives. This is often the first text stakeholders read.", tips: ["Include location, main activity, and expected GHG outcome in the first paragraph.", "Avoid overly technical language; make it accessible to a non‑expert reader."] },
+    "overview-impact": { label: "Overview – Explanation of Impact", description: "Explain how the project generates GHG reductions or removals relative to the baseline scenario.", tips: ["Summarize the causal chain: activity → change in emissions or removals → quantified outcome.", "Reference, at a high level, the data and parameters that drive the calculations (e.g., CO₂ captured per tonne of product)."] },
+    "overview-value-chain": { label: "Overview – Value Chain Description", description: "Describe where in the value chain the project intervenes (e.g., raw material sourcing, manufacturing, distribution, end‑use).", tips: ["Clarify dependencies on upstream suppliers or downstream users.", "Note any key partners or facilities that are critical to the project delivering its intended outcomes."] }
+  };
 
-  function renderFieldInfo(fieldKey) {
-    const field = fieldDefinitions[fieldKey];
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tabName = btn.getAttribute('data-tab');
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      document.querySelector(`[data-tab-content="${tabName}"]`).classList.add('active');
+    });
+  });
+
+  // Collapsible sections
+  document.querySelectorAll('.collapsible-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const section = header.closest('.collapsible-section');
+      section.classList.toggle('collapsed');
+    });
+  });
+
+  // Render field info function
+  function renderFieldInfo(fieldKey, container, fieldDefs) {
+    const field = fieldDefs[fieldKey];
     if (!field) return;
+    const tipsHtml = field.tips ? `<div class="tips"><h4>Tips:</h4><ul>${field.tips.map(tip => `<li>${tip}</li>`).join('')}</ul></div>` : '';
+    container.innerHTML = `<div class="field-info"><h2>${field.label}</h2><span class="badge editable">✏️ Editable</span><p>${field.description}</p>${tipsHtml}</div>`;
+  }
 
-    const badgeClass = field.editable ? 'editable' : 'readonly';
-    const badgeText = field.editable ? '✏️ Editable' : '🔒 Read-only';
+  // COVER form interactivity
+  const coverInputs = document.querySelectorAll('#coverForm input[data-field], #coverForm select[data-field]');
+  const coverContainer = document.getElementById('fieldInfoContainer-cover');
+  coverInputs.forEach(input => {
+    ['focus', 'click'].forEach(event => {
+      input.addEventListener(event, () => renderFieldInfo(input.getAttribute('data-field'), coverContainer, coverFields));
+    });
+  });
 
-    const tipsHtml = field.tips
-      ? `<div class="tips">
-          <h4>Tips:</h4>
-          <ul>${field.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>
-        </div>`
-      : '';
+  // PROJECT SUMMARY form interactivity
+  const summaryInputs = document.querySelectorAll('#summaryForm input[data-field], #summaryForm select[data-field], #summaryForm textarea[data-field]');
+  const summaryContainer = document.getElementById('fieldInfoContainer-summary');
+  summaryInputs.forEach(input => {
+    ['focus', 'click'].forEach(event => {
+      input.addEventListener(event, () => renderFieldInfo(input.getAttribute('data-field'), summaryContainer, summaryFields));
+    });
+  });
 
-    fieldInfoContainer.innerHTML = `
-      <div class="field-info">
-        <h2>${field.label}</h2>
-        <span class="badge ${badgeClass}">${badgeText}</span>
-        <p>${field.description}</p>
-        ${tipsHtml}
+  // Entity management
+  let entityCount = 0;
+  document.getElementById('addEntity').addEventListener('click', (e) => {
+    e.preventDefault();
+    entityCount++;
+    const newEntity = document.createElement('div');
+    newEntity.className = 'entity-row';
+    newEntity.id = `entity-${entityCount}`;
+    newEntity.innerHTML = `
+      <div class="form-row-3">
+        <div>
+          <label style="font-size: 12px;">Organization Name</label>
+          <input type="text" class="entity-name" placeholder="Enter Organization Name" />
+        </div>
+        <div>
+          <label style="font-size: 12px;">Email</label>
+          <input type="email" class="entity-email" placeholder="Enter Email" />
+        </div>
+        <div>
+          <label style="font-size: 12px;">Role in the Project</label>
+          <input type="text" class="entity-role" placeholder="Enter Role in the Project" />
+        </div>
+      </div>
+      <div class="entity-controls">
+        <button type="button" class="btn btn-danger remove-entity">Remove</button>
       </div>
     `;
-  }
-
-  formInputs.forEach(input => {
-    input.addEventListener('focus', () => {
-      const fieldKey = input.getAttribute('data-field');
-      renderFieldInfo(fieldKey);
-    });
-
-    input.addEventListener('click', () => {
-      const fieldKey = input.getAttribute('data-field');
-      renderFieldInfo(fieldKey);
+    document.getElementById('entityContainer').appendChild(newEntity);
+    newEntity.querySelector('.remove-entity').addEventListener('click', (e) => {
+      e.preventDefault();
+      newEntity.remove();
     });
   });
 
-  commentsBtn.addEventListener('click', () => {
-    commentsBtn.classList.toggle('active');
-    alert('Comments feature would be implemented here.');
+  // Remove existing entities
+  document.querySelectorAll('.remove-entity').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      btn.closest('.entity-row').remove();
+    });
   });
 
-  // Initialize with first field info
-  if (formInputs.length > 0) {
-    renderFieldInfo(formInputs[0].getAttribute('data-field'));
-  }
+  // Initialize
+  if (coverInputs.length > 0) renderFieldInfo(coverInputs[0].getAttribute('data-field'), coverContainer, coverFields);
+  if (summaryInputs.length > 0) renderFieldInfo(summaryInputs[0].getAttribute('data-field'), summaryContainer, summaryFields);
 </script>
 
 </body>
