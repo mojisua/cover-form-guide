@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>COVER Page Form Guide</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    .left-panel {
+      flex: 1.5;
+      background: white;
+      overflow-y: auto;
+      padding: 24px;
+      border-right: 1px solid #e0e0e0;
+    }
+
+    .right-panel {
+      flex: 1;
+      background: #fafafa;
+      overflow-y: auto;
+      padding: 24px;
+      border-left: 1px solid #e0e0e0;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .show-comments-btn {
+      background: white;
+      border: 1px solid #d0d0d0;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      color: #0066cc;
+      transition: all 0.2s;
+    }
+
+    .show-comments-btn:hover {
+      background: #f0f0f0;
+      border-color: #0066cc;
+    }
+
+    .show-comments-btn.active {
+      background: #0066cc;
+      color: white;
+      border-color: #0066cc;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: #555;
+    }
+
+    .form-group label .required {
+      color: #d32f2f;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="date"],
+    .form-group select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #d0d0d0;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group input[type="date"]:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #0066cc;
+      background: #f0f7ff;
+    }
+
+    .form-group input:disabled {
+      background: #f0f0f0;
+      color: #999;
+      cursor: not-allowed;
+    }
+
+    .form-group.readonly input {
+      background: #f0f0f0;
+      color: #999;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .radio-option input[type="radio"] {
+      margin-right: 8px;
+      cursor: pointer;
+    }
+
+    .radio-option label {
+      margin: 0;
+      font-weight: normal;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .field-tag {
+      position: absolute;
+      top: -18px;
+      right: 0;
+      background: #0066cc;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 500;
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+
+    .form-group:hover .field-tag {
+      opacity: 1;
+    }
+
+    .hint-text {
+      font-size: 12px;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    /* Right Panel - Field Info */
+    .field-info {
+      background: white;
+      padding: 16px;
+      border-radius: 6px;
+      border-left: 4px solid #0066cc;
+    }
+
+    .field-info h2 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      color: #333;
+    }
+
+    .field-info p {
+      font-size: 13px;
+      margin-bottom: 12px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .badge.editable {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .badge.readonly {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    .tips {
+      background: #f5f5f5;
+      padding: 12px;
+      border-radius: 4px;
+      margin-top: 12px;
+    }
+
+    .tips h4 {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .tips ul {
+      padding-left: 18px;
+    }
+
+    .tips li {
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 6px;
+    }
+
+    .placeholder-info {
+      color: #999;
+      font-style: italic;
+    }
+
+    @media (max-width: 1024px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .container {
+        flex-direction: column;
+      }
+
+      .left-panel,
+      .right-panel {
+        flex: 1;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- LEFT PANEL: FORM -->
+  <div class="left-panel">
+    <div class="header">
+      <h1>COVER</h1>
+      <button class="show-comments-btn" id="commentsBtn">💬 Show comments</button>
+    </div>
+
+    <form id="coverForm">
+      <!-- Project Name -->
+      <div class="form-group">
+        <label>Project Name <span class="required">*</span></label>
+        <span class="field-tag">Editable</span>
+        <input type="text" id="projectName" placeholder="Enter project name" data-field="project-name" />
+        <div class="hint-text">Enter the full project title as it should appear in the registry</div>
+      </div>
+
+      <!-- Text_Matrix (appears to be a specific field) -->
+      <div class="form-group">
+        <label>Text_Matrix</label>
+        <span class="field-tag">Editable</span>
+        <input type="text" id="textMatrix" placeholder="Enter value" data-field="text-matrix" />
+      </div>
+
+      <!-- Registry ID (Read-only) -->
+      <div class="form-group readonly">
+        <label>Registry ID</label>
+        <span class="field-tag">Read-only</span>
+        <input type="text" id="registryId" value="Auto-assigned ID" disabled />
+        <div class="hint-text">This is the registry-assigned project identifier (read-only)</div>
+      </div>
+
+      <!-- Project Start Date -->
+      <div class="form-group">
+        <label>Project Start Date</label>
+        <span class="field-tag">Editable</span>
+        <input type="date" id="projectStartDate" data-field="project-start-date" />
+        <div class="hint-text">Format: DD-MMM-YYYY (e.g., 01-Jan-2022)</div>
+      </div>
+
+      <!-- Issuing Period Start & End Date -->
+      <div class="form-group">
+        <label>Issuing Period Start & End Date</label>
+        <span class="field-tag">Editable</span>
+        <div class="form-row">
+          <div>
+            <label style="font-size: 12px; font-weight: normal;">Start Date <span class="required">*</span></label>
+            <input type="date" id="issuingStartDate" data-field="issuing-period-start" />
+          </div>
+          <div>
+            <label style="font-size: 12px; font-weight: normal;">End Date</label>
+            <input type="date" id="issuingEndDate" data-field="issuing-period-end" />
+          </div>
+        </div>
+        <div class="hint-text">Define the crediting period for this issuance</div>
+      </div>
+
+      <!-- Submission Purpose -->
+      <div class="form-group">
+        <label>Submission Purpose <span class="required">*</span></label>
+        <span class="field-tag">Editable</span>
+        <div class="radio-group">
+          <div class="radio-option">
+            <input type="radio" id="purpose-listing" name="submissionPurpose" value="listing" data-field="submission-purpose" />
+            <label for="purpose-listing">Listing</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="purpose-validation" name="submissionPurpose" value="validation" data-field="submission-purpose" />
+            <label for="purpose-validation">Validation Approval</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="purpose-deviation" name="submissionPurpose" value="deviation" data-field="submission-purpose" />
+            <label for="purpose-deviation">Updated Project Description Following IP Deviation</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="purpose-resubmission" name="submissionPurpose" value="resubmission" data-field="submission-purpose" />
+            <label for="purpose-resubmission">Resubmission/Update</label>
+          </div>
+        </div>
+        <div class="hint-text">Select the reason for this submission</div>
+      </div>
+
+      <!-- Document Version -->
+      <div class="form-group">
+        <label>Document Version</label>
+        <span class="field-tag">Editable</span>
+        <input type="text" id="documentVersion" placeholder="e.g., v1, v2, v3" data-field="document-version" />
+        <div class="hint-text">Internal version number of this document</div>
+      </div>
+
+      <!-- First Issue Date -->
+      <div class="form-group">
+        <label>First Issue Date</label>
+        <span class="field-tag">Editable</span>
+        <input type="date" id="firstIssueDate" data-field="first-issue-date" />
+        <div class="hint-text">Date on which this version was submitted (Format: DD-Month-YYYY)</div>
+      </div>
+
+      <!-- Last Issue Date -->
+      <div class="form-group">
+        <label>Last Issue Date</label>
+        <span class="field-tag">Editable</span>
+        <input type="date" id="lastIssueDate" data-field="last-issue-date" />
+        <div class="hint-text">Format: DD-Month-YYYY</div>
+      </div>
+
+      <!-- SBS Standard Version -->
+      <div class="form-group">
+        <label>SBS Standard Version</label>
+        <span class="field-tag">Editable</span>
+        <select id="standardVersion" data-field="standard-version">
+          <option value="">Select a version</option>
+          <option value="v9.5">SBS Standard V9.5</option>
+          <option value="v9.0">SBS Standard V9.0</option>
+          <option value="v8.5">SBS Standard V8.5</option>
+          <option value="v1.9">SCS Standard V1.9</option>
+        </select>
+        <div class="hint-text">Select the applicable version of the carbon standard</div>
+      </div>
+    </form>
+  </div>
+
+  <!-- RIGHT PANEL: FIELD GUIDE -->
+  <div class="right-panel">
+    <h2>Field Guide</h2>
+    <div id="fieldInfoContainer">
+      <div class="placeholder-info">
+        <p>Click on any field on the left to view detailed guidance.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const fieldDefinitions = {
+    "project-name": {
+      label: "Project Name",
+      editable: true,
+      description: "Enter the full project title as it should appear in the registry. Avoid internal abbreviations or codes that external stakeholders may not understand.",
+      tips: [
+        "Use official project naming conventions from your organization.",
+        "Include geographic qualifier if there are multiple similar projects.",
+        "Ensure consistency with supporting documentation."
+      ]
+    },
+    "text-matrix": {
+      label: "Text_Matrix",
+      editable: true,
+      description: "This field captures specific matrix information related to the project.",
+      tips: [
+        "Fill in according to your organization's guidelines.",
+        "Keep entries consistent across all submissions."
+      ]
+    },
+    "registry-id": {
+      label: "Registry ID",
+      editable: false,
+      description: "This is the registry-assigned project identifier. It is read-only in this form. Use it when referencing the project in correspondence or other systems.",
+      tips: [
+        "Do not attempt to change this ID; edits must be requested through registry support.",
+        "Use this ID in filenames and internal trackers for easy cross-referencing."
+      ]
+    },
+    "project-start-date": {
+      label: "Project Start Date",
+      editable: true,
+      description: "Specify the date when project activities officially began according to the methodology definition.",
+      tips: [
+        "Use the DD-MMM-YYYY format (e.g., 01-Jan-2022).",
+        "Ensure consistency with supporting documentation and contracts.",
+        "This date should align with your project monitoring plan."
+      ]
+    },
+    "issuing-period-start": {
+      label: "Issuing Period – Start Date",
+      editable: true,
+      description: "Define the first day of the crediting period for this issuance (the first day for which emission reductions or removals are claimed).",
+      tips: [
+        "Check that the period does not overlap with any previous issuance.",
+        "Align with monitoring and verification reports for this period.",
+        "Must be after the project start date."
+      ]
+    },
+    "issuing-period-end": {
+      label: "Issuing Period – End Date",
+      editable: true,
+      description: "Define the last day of the crediting period for this issuance (the last day for which emission reductions or removals are claimed).",
+      tips: [
+        "Should not overlap with subsequent issuances.",
+        "Must be after the start date.",
+        "Align with your monitoring and verification completion date."
+      ]
+    },
+    "submission-purpose": {
+      label: "Submission Purpose",
+      editable: true,
+      description: "Select the reason for this submission. This controls how the registry processes and reviews the document.",
+      tips: [
+        "Choose 'Validation Approval' for first-time validation and crediting.",
+        "Use 'Resubmission/Update' when responding to corrective action requests.",
+        "Select 'Listing' for initial project registration.",
+        "'Updated Project Description' is used when there are deviations from original plans."
+      ]
+    },
+    "document-version": {
+      label: "Document Version",
+      editable: true,
+      description: "Internal version number of this document (e.g., v1, v2, v3). Helps track changes between submissions.",
+      tips: [
+        "Increment the version each time you resubmit to the registry.",
+        "Keep a matching version number in your local filename.",
+        "Use consistent versioning format across all submissions."
+      ]
+    },
+    "first-issue-date": {
+      label: "First Issue Date",
+      editable: true,
+      description: "Date on which this version was first submitted to the registry for this issuance cycle.",
+      tips: [
+        "Use the date of initial upload or formal submission, not the draft creation date.",
+        "Keep this aligned with your internal records of submission.",
+        "Important for audit trail and compliance tracking."
+      ]
+    },
+    "last-issue-date": {
+      label: "Last Issue Date",
+      editable: true,
+      description: "Date associated with the final issuance for this crediting period (if applicable).",
+      tips: [
+        "May match or follow the approval date from the registry.",
+        "Leave blank if this is the first and only issuance so far.",
+        "Update this field when receiving final approval from the registry."
+      ]
+    },
+    "standard-version": {
+      label: "Standard Version",
+      editable: true,
+      description: "Select the applicable version of the carbon standard. This defines which rules and requirements apply to your project.",
+      tips: [
+        "Confirm the correct version with your validation/verification body (VVB).",
+        "Ensure your monitoring plan and calculations reference the same standard version.",
+        "Different versions may have different requirements and methodologies.",
+        "Cannot be changed after initial submission for a given crediting period."
+      ]
+    }
+  };
+
+  const formInputs = document.querySelectorAll('input[data-field], select[data-field]');
+  const fieldInfoContainer = document.getElementById('fieldInfoContainer');
+  const commentsBtn = document.getElementById('commentsBtn');
+
+  function renderFieldInfo(fieldKey) {
+    const field = fieldDefinitions[fieldKey];
+    if (!field) return;
+
+    const badgeClass = field.editable ? 'editable' : 'readonly';
+    const badgeText = field.editable ? '✏️ Editable' : '🔒 Read-only';
+
+    const tipsHtml = field.tips
+      ? `<div class="tips">
+          <h4>Tips:</h4>
+          <ul>${field.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>
+        </div>`
+      : '';
+
+    fieldInfoContainer.innerHTML = `
+      <div class="field-info">
+        <h2>${field.label}</h2>
+        <span class="badge ${badgeClass}">${badgeText}</span>
+        <p>${field.description}</p>
+        ${tipsHtml}
+      </div>
+    `;
+  }
+
+  formInputs.forEach(input => {
+    input.addEventListener('focus', () => {
+      const fieldKey = input.getAttribute('data-field');
+      renderFieldInfo(fieldKey);
+    });
+
+    input.addEventListener('click', () => {
+      const fieldKey = input.getAttribute('data-field');
+      renderFieldInfo(fieldKey);
+    });
+  });
+
+  commentsBtn.addEventListener('click', () => {
+    commentsBtn.classList.toggle('active');
+    alert('Comments feature would be implemented here.');
+  });
+
+  // Initialize with first field info
+  if (formInputs.length > 0) {
+    renderFieldInfo(formInputs[0].getAttribute('data-field'));
+  }
+</script>
+
+</body>
+</html>
